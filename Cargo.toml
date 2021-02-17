@@ -1,0 +1,16 @@
+[package]
+name = "unixtime"
+version = "0.1.0"
+authors = ["Maximilian Schoenenberg <max.schoenenberg@me.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4.19"
+clap = "3.0.0-beta.2"
+
+[profile.release]
+lto = "fat"
+debug = 0
+opt-level = 3
