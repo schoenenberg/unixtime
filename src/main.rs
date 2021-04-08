@@ -9,9 +9,9 @@ fn main() {
         .author(crate_authors!())
         .about(crate_description!())
         .version(crate_version!())
-        .arg(clap::Arg::new("millis").long("millis").short('m'))
-        .arg(clap::Arg::new("nanos").long("nanos").short('n'))
-        .group(clap::ArgGroup::new("exclusions").arg("millis").arg("nanos"))
+        .arg(clap::Arg::with_name("millis").long("millis").short("m"))
+        .arg(clap::Arg::with_name("nanos").long("nanos").short("n"))
+        .group(clap::ArgGroup::with_name("exclusions").arg("millis").arg("nanos"))
         .get_matches();
 
     let timestamp = chrono::Utc::now();
