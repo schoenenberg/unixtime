@@ -6,7 +6,7 @@ A small utility to print the current unix-time on STDOUT.
 
 ## Motivation
 
-Sometimes I need the current unix-time for interacting with APIs and other stuff. But I never remember the correct command for it (is's `date +%s`). I mostly end up googling the current unix-time..
+Sometimes I need the current unix-time for interacting with APIs and other stuff. But I never remember the correct command for it (it's `date +%s`). I mostly end up googling the current unix-time..
 
 As it's using `chrono` as date and time library this should also work on Windows and other systems not having the `date` command.
 
