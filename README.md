@@ -1,4 +1,6 @@
-# unixtime
+# unixtime 
+
+[![Rust](https://github.com/schoenenberg/unixtime/actions/workflows/rust.yml/badge.svg)](https://github.com/schoenenberg/unixtime/actions/workflows/rust.yml)
 
 A small utility to print the current unix-time on STDOUT.
 
