@@ -41,9 +41,18 @@ fn parse_cmdline<'a>() -> clap::ArgMatches<'a> {
         .author(crate_authors!())
         .about(crate_description!())
         .version(crate_version!())
-        .arg(clap::Arg::with_name("secs").long("secs").short("s"))
-        .arg(clap::Arg::with_name("millis").long("millis").short("m"))
-        .arg(clap::Arg::with_name("nanos").long("nanos").short("n"))
+        .arg(
+            clap::Arg::with_name("millis")
+                .long("millis")
+                .short("m")
+                .help("Unix-time in ms"),
+        )
+        .arg(
+            clap::Arg::with_name("nanos")
+                .long("nanos")
+                .short("n")
+                .help("Unix-time in ns"),
+        )
         .arg(
             clap::Arg::with_name("rfc3339")
                 .long("rfc3339")
@@ -54,39 +63,32 @@ fn parse_cmdline<'a>() -> clap::ArgMatches<'a> {
                 .long("rfc2822")
                 .help("Uses RFC 2822 as output format. Example: 'Wed, 28 Jul 2021 18:30:05 +0000'"),
         )
+        .arg(clap::Arg::with_name("input")
+            .help("The input value. Required if '--from' is not set to 'now'.")
+            .required_ifs(&[
+            ("from", "secs"),
+            ("from", "millis"),
+            ("from", "nanos"),
+            ("from", "s"),
+            ("from", "m"),
+            ("from", "n"),
+        ]))
         .arg(
-            clap::Arg::with_name("from-secs")
-                .long("from-secs")
-                .visible_alias("from")
+            clap::Arg::with_name("from")
+                .long("from")
+                .short("f")
+                .possible_values(&["now", "secs", "millis", "nanos", "s", "m", "n"])
                 .default_value("now")
                 .takes_value(true)
-                .help("Provide an input in seconds since epoch. There is a special case 'now' which takes the current "),
-        )
-        .arg(
-            clap::Arg::with_name("from-millis")
-                .long("from-millis")
-                .takes_value(true),
-        )
-        .arg(
-            clap::Arg::with_name("from-nanos")
-                .long("from-nanos")
-                .takes_value(true),
+                .required(true)
+                .help("Specifies the input format, unless this is set to 'now' (default value)."),
         )
         .group(
             clap::ArgGroup::with_name("output")
-                .arg("secs")
                 .arg("millis")
                 .arg("nanos")
                 .arg("rfc2282")
-                .arg("rfc3339")
-                .required(true),
-        )
-        .group(
-            clap::ArgGroup::with_name("input")
-                .arg("from-secs")
-                .arg("from-millis")
-                .arg("from-nanos")
-                .required(true),
+                .arg("rfc3339"),
         )
         .get_matches()
 }
@@ -96,31 +98,36 @@ fn parse_input(
 ) -> Result<chrono::DateTime<chrono::Utc>, Box<dyn Error>> {
     use chrono::TimeZone;
 
-    if let Some(unix_timestamp) = matches.value_of("from-secs") {
-        if unix_timestamp == "now" {
-            Ok(chrono::Utc::now())
-        } else {
-            let timestamp: i64 = unix_timestamp.parse()?;
+    match matches.value_of("from").expect("Checked by clap") {
+        "now" => Ok(chrono::Utc::now()),
+        "secs" | "s" => {
+            let input = matches.value_of("input").expect("Enforced by clap");
+            let timestamp: i64 = input.parse()?;
             Ok(chrono::Utc.from_utc_datetime(&chrono::NaiveDateTime::from_timestamp(timestamp, 0)))
         }
-    } else if let Some(millis_timestamp) = matches.value_of("from-millis") {
-        let timestamp: i64 = millis_timestamp.parse()?;
-        Ok(
-            chrono::Utc.from_utc_datetime(&chrono::NaiveDateTime::from_timestamp(
-                timestamp / 1000,
-                ((timestamp % 1000) * 1_000_000).try_into()?,
-            )),
-        )
-    } else if let Some(nanos_timestamp) = matches.value_of("from-nanos") {
-        let timestamp: i64 = nanos_timestamp.parse()?;
-        Ok(
-            chrono::Utc.from_utc_datetime(&chrono::NaiveDateTime::from_timestamp(
-                timestamp / 1_000_000_000,
-                (timestamp % 1_000_000_000).try_into()?,
-            )),
-        )
-    } else {
-        unreachable!("Checked by clap-group")
+        "millis" | "m" => {
+            let input = matches.value_of("input").expect("Enforced by clap");
+            let timestamp: i64 = input.parse()?;
+            Ok(
+                chrono::Utc.from_utc_datetime(&chrono::NaiveDateTime::from_timestamp(
+                    timestamp / 1000,
+                    ((timestamp % 1000) * 1_000_000).try_into()?,
+                )),
+            )
+        }
+        "nanos" | "n" => {
+            let input = matches.value_of("input").expect("Enforced by clap");
+            let timestamp: i64 = input.parse()?;
+            Ok(
+                chrono::Utc.from_utc_datetime(&chrono::NaiveDateTime::from_timestamp(
+                    timestamp / 1_000_000_000,
+                    (timestamp % 1_000_000_000).try_into()?,
+                )),
+            )
+        }
+        &_ => {
+            unreachable!("Enforced by clap")
+        }
     }
 }
 
