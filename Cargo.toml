@@ -1,12 +1,12 @@
 [package]
 name = "unixtime"
 version = "0.1.2"
-authors = ["Maximilian Schönenberg <max.schoenenberg@me.com>"]
+authors = ["Maximilian Schönenberg <github@schoenenberg.email>"]
 edition = "2018"
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/schoenenberg/unixtime"
-description = "A small utility to print the current unix-time on STDOUT."
+description = "A small utility for working with UNIX time."
 keywords = ["utility", "tool", "unixtime", "time", "cli"]
 categories = ["command-line-interface", "command-line-utilities", "date-and-time"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
