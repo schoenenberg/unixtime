@@ -1,6 +1,6 @@
 [package]
 name = "unixtime"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["Maximilian Schönenberg <github@schoenenberg.email>"]
 edition = "2018"
 readme = "README.md"

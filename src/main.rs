@@ -37,7 +37,6 @@ fn main() {
     println!("{}", time_str);
 }
 
-
 /// Setup of the command-line options
 fn cmdline_options<'a, 'b>() -> clap::App<'a, 'b> {
     clap::App::new(crate_name!())
