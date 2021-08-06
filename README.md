@@ -10,7 +10,7 @@ Sometimes I need the current unix-time for interacting with APIs and other stuff
 ## Features
 
 - Printing the current UNIX timestamp in seconds, milliseconds or nanoseconds
-- Reverse conversion of UNIX timestamp to human readbale format
+- Reverse conversion of UNIX timestamp to human readable format (RFC 2822, RFC 3339)
 
 As it's using `chrono` as date and time library this should also work on Windows and other systems not having the `date` command.
 
