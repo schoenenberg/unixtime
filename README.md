@@ -14,6 +14,27 @@ Sometimes I need the current unix-time for interacting with APIs and other stuff
 
 As it's using `chrono` as date and time library this should also work on Windows and other systems not having the `date` command.
 
+## Installation
+
+### Download a prebuilt binary
+
+#### macOS
+
+Install `unixtime` with the homebrew package manager:
+```bash
+brew tap schoenenberg/tap
+brew install unixtime
+```
+
+#### cargo package manager
+
+`unixtime` can be installed using the Rust package manager *cargo*:
+```bash
+cargo install unixtime
+```
+
+Then you should be able to launch `unixtime`.
+
 ## Benchmark
 Benchmarks were executed with the [hyperfine](https://github.com/sharkdp/hyperfine) utility:
 
@@ -37,12 +58,3 @@ Summary
   'date +%s' ran
     1.79 ± 0.85 times faster than 'unixtime'
 ```
-
-## Installation
-
-Installation requires the Rust-Toolchain. Then install it by executing:
-```bash
-cargo install unixtime
-```
-
-Then you should be able to launch `unixtime`.
