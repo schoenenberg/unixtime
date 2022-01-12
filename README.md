@@ -35,6 +35,28 @@ cargo install unixtime
 
 Then you should be able to launch `unixtime`.
 
+## Usage
+
+Print the current Unix timestamp:
+```
+> unixtime
+164202621
+```
+
+Print the current timestamp as nanoseconds since January 1, 1970:
+```
+> unixtime --nanos
+1642026460849506000
+```
+
+Convert Unix timestamp to human readable format:
+```
+> unixtime --from=secs 164202621 --rfc2822
+Sun, 16 Mar 1975 11:50:21 +0000
+> unixtime --from=nanos 1642026460849506000 --rfc3339
+2022-01-12T22:27:40.849506+00:00
+```
+
 ## Benchmark
 Benchmarks were executed with the [hyperfine](https://github.com/sharkdp/hyperfine) utility:
 
